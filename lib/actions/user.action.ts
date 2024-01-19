@@ -24,11 +24,15 @@ export async function getUserById(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDB();
+    console.log("test");
 
     const newUser = await User.create(userData);
+    console.log(newUser);
+
     return newUser;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 export async function updateUser(userData: UpdateUserParams) {

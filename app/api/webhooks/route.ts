@@ -58,11 +58,10 @@ export async function POST(req: Request) {
     const mongoUser = await createUser({
       clerkId: id,
       name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
-      userName: username!,
+      username: username!,
       picture: image_url,
       email: email_addresses[0].email_address,
     });
-    console.log("hi" + mongoUser);
 
     return NextResponse.json({ message: "OK", user: mongoUser });
   }

@@ -3,7 +3,7 @@ import { boolean, date } from "zod";
 const UserSchema = new mongoose.Schema({
   clerkId: { type: String, required: true },
   name: { type: String, required: true },
-  userName: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
   picture: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
