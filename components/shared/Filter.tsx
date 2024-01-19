@@ -1,13 +1,5 @@
-import { POPOULAR_TAGS } from "@/constants";
 import React from "react";
-import RenderTags from "./RenderTags";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "../ui/menubar";
+
 import {
   Select,
   SelectContent,
