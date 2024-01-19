@@ -62,6 +62,8 @@ export async function POST(req: Request) {
       picture: image_url,
       email: email_addresses[0].email_address,
     });
+    console.log("hi" + mongoUser);
+
     return NextResponse.json({ message: "OK", user: mongoUser });
   }
   if (eventType === "user.updated") {

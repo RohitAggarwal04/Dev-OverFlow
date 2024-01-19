@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, models } from "mongoose";
 import { boolean, date } from "zod";
 const UserSchema = new mongoose.Schema({
-  clerkId: { type: Number, required: true },
+  clerkId: { type: String, required: true },
   name: { type: String, required: true },
   userName: { type: String, required: true, unique: true },
   picture: { type: String, required: true },
