@@ -1,18 +1,29 @@
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
-import RenderTags from "@/components/shared/RenderTags";
+import Pagination from "@/components/shared/Pagination";
 import QuestionCard from "@/components/shared/card/QuestionCard";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
-import { QUESTIONS } from "@/constants";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
-import Image from "next/image";
-import Link from "next/link";
+import { SearchParamsProps } from "@/types";
+import { Metadata } from "next";
 
-export default async function Home() {
-  const result = await getQuestions({});
+import Link from "next/link";
+export const metadata: Metadata = {
+  title: "Home Page | Dev Overflow",
+  description: "Home page of Dev Overflow",
+  icons: {
+    icon: "/assets/images/site-logo.svg",
+  },
+};
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const result = await getQuestions({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? parseInt(searchParams.page) : 1,
+  });
 
   return (
     <>
@@ -52,7 +63,7 @@ export default async function Home() {
               tags={question.tags}
               author={question.author}
               upVotes={question.upVotes}
-              views={question.Views}
+              views={question.views}
               answers={question.answers}
               createdAt={question.createdAt}
             />
@@ -67,6 +78,12 @@ export default async function Home() {
             linkTitle=" Ask a Question"
           />
         )}
+      </div>
+      <div className="mt-10 ">
+        <Pagination
+          page={searchParams.page ? parseInt(searchParams.page) : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );

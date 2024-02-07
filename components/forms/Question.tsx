@@ -19,16 +19,27 @@ import { Button } from "../ui/button";
 import { QuestionsSchema } from "@/lib/validations";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 
 import { useRouter, usePathname } from "next/navigation";
+import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "../ui/use-toast";
 
-const Question = ({ mongoUserId }: { mongoUserId: string }) => {
+interface Props {
+  type: string;
+  mongoUserId: string;
+  questionDetail?: string;
+}
+const Question = ({ mongoUserId, questionDetail, type }: Props) => {
+  const { mode } = useTheme();
   const editorRef = useRef(null);
-  const type: string = "create";
   const router = useRouter();
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const parsedQuestionDetails =
+    questionDetail && JSON.parse(questionDetail || "");
+  const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     field: any
@@ -62,9 +73,9 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
-      title: "",
-      explanation: "",
-      tags: [],
+      title: parsedQuestionDetails?.title || "",
+      explanation: parsedQuestionDetails?.content || "",
+      tags: groupedTags || [],
     },
   });
 
@@ -72,20 +83,31 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
   async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     setIsSubmitting(true);
     try {
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
-      router.push("/");
+      if (type === "edit") {
+        await editQuestion({
+          title: values.title,
+          content: values.explanation,
+          questionId: parsedQuestionDetails._id,
+          path: pathname,
+        });
+        router.push(`/questions/${parsedQuestionDetails._id}`);
+      } else {
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
+        router.push("/");
+        return toast({
+          title: "Question asked Successfully",
+        });
+      }
     } catch (error) {
     } finally {
       setIsSubmitting(false);
     }
-
-    console.log(values);
   }
   return (
     <Form {...form}>
@@ -106,7 +128,7 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Input
-                  className="no-focus paragraph-regular backgrund-light900_dark300 light-border-2 border text-dark300_light700 min-h-[56px]"
+                  className="no-focus paragraph-regular  background-light900_dark300 light-border-2 border text-dark300_light700 min-h-[56px]"
                   {...field}
                 />
               </FormControl>
@@ -137,7 +159,7 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
                     //@ts-ignore
                     (editorRef.current = editor)
                   }
-                  initialValue=""
+                  initialValue={parsedQuestionDetails?.content || ""}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => {
                     field.onChange(content);
@@ -167,6 +189,8 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
                       "codesample | bold italic forecolor | alignleft aligncenter |" +
                       "alignright alignjustify | bullist numlist",
                     content_style: "body { font-family:Inter; font-size:16px }",
+                    content_css: mode === "dark" ? "dark" : "light",
+                    skin: mode === "dark" ? "oxide-dark" : "oxide",
                   }}
                 />
               </FormControl>
@@ -186,15 +210,19 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
               className="flex w-full flex-col
          "
             >
-              <FormLabel className="paragraph-semibold text-dark400_light800">
+              <FormLabel
+                className="paragraph-semibold 
+              "
+              >
                 Tags <span className="text-primary-500 ">*</span>{" "}
               </FormLabel>
               <FormControl className="mt-3.5">
                 <>
                   {" "}
                   <Input
+                    disabled={type === "edit"}
                     placeholder="Add tags..."
-                    className="no-focus paragraph-regular backgrund-light900_dark300 light-border-2 border text-dark300_light700 min-h-[56px]"
+                    className="no-focus paragraph-regular background-light900_dark300 light-border-2 border text-dark300_light700 min-h-[56px]"
                     onKeyDown={(e) => {
                       handleInputKeyDown(e, field);
                     }}
@@ -203,19 +231,24 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
                     <div className="flex-start mt-2.5 gap-2.5 ">
                       {field.value.map((tag: any) => (
                         <Badge
+                          key={tag._id}
                           onClick={() => {
-                            handleTagRemove(tag, field);
+                            {
+                              type !== "edit" && handleTagRemove(tag, field);
+                            }
                           }}
                           className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize  "
                         >
                           {tag}
-                          <Image
-                            src="/assets/icons/close.svg"
-                            alt="close"
-                            width={12}
-                            height={12}
-                            className="object-contain cursor-pointer invert-0 dark:invert"
-                          />
+                          {type !== "edit" && (
+                            <Image
+                              src="/assets/icons/close.svg"
+                              alt="close"
+                              width={12}
+                              height={12}
+                              className="object-contain cursor-pointer invert-0 dark:invert"
+                            />
+                          )}
                         </Badge>
                       ))}
                     </div>

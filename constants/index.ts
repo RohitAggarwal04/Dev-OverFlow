@@ -1,5 +1,4 @@
 import { SidebarLink } from "@/types";
-import exp from "constants";
 
 export const themes = [
   { value: "light", label: "Light", icon: "/assets/icons/sun.svg" },
@@ -40,7 +39,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     imgURL: "/assets/icons/question.svg",
-    route: "/ask-question",
+    route: "/ask-a-question",
     label: "Ask a question",
   },
 ];

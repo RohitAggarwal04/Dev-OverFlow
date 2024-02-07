@@ -6,13 +6,10 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import Image from "next/image";
 import { themes } from "@/constants";
-import { Key } from "lucide-react";
 const Theme = () => {
   const { mode, setMode } = useTheme();
   return (
@@ -38,11 +35,11 @@ const Theme = () => {
             />
           )}{" "}
         </MenubarTrigger>
-        <MenubarContent className="absolute right-[-3rem] mt-3 min-w-[120px] rounded border py-2 dark:border-dark-400 dark:bg-dark-300  ">
+        <MenubarContent className="absolute right-[-3rem] mt-3 min-w-[120px] rounded border py-2 dark:border-dark-400 dark:bg-dark-300 bg-light-900  ">
           {themes.map((item) => (
             <MenubarItem
               key={item.value}
-              className="flex items-center gap-4 px-2.5 py-2 dark:focus:bg-dark-400 "
+              className="flex items-center gap-4 cursor-pointer focus:bg-light-800 px-2.5 py-2 dark:focus:bg-dark-400 "
               onClick={() => {
                 setMode(item.value);
                 if (item.value !== "system") {

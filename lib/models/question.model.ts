@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document } from "mongoose";
 
 const QuestionSchema = new mongoose.Schema({
   title: { type: String, required: true },

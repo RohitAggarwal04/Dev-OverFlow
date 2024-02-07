@@ -14,6 +14,7 @@ export interface GetAnswersParams {
   sortBy?: string;
   page?: number;
   pageSize?: number;
+  filter?: string;
 }
 
 export interface AnswerVoteParams {
@@ -68,6 +69,10 @@ export interface CreateQuestionParams {
 
 export interface GetQuestionByIdParams {
   questionId: string;
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: string;
 }
 
 export interface QuestionVoteParams {

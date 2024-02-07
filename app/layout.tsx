@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import "../styles/prism.css";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeProvider";
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
     icon: "/assets/images/site-logo.svg",
   },
 };
+
 export default function RootLayout({
   children,
 }: {
