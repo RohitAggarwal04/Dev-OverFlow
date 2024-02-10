@@ -4,8 +4,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <main className="flex min-h-screen w-full items-center justify-center bg-auth-light  dark:bg-auth-dark bg-cover bg-center ">
+      {children}
+    </main>
   );
 }

@@ -13,6 +13,12 @@ export const AnswerFilters = [
   { name: "Oldest", value: "old" },
 ];
 
+export const JobFilters = [
+  { name: "India", value: "India" },
+  { name: "Lowest Upvotes", value: "lowestUpvotes" },
+  { name: "Most Recent", value: "recent" },
+  { name: "Oldest", value: "old" },
+];
 export const UserFilters = [
   { name: "New Users", value: "new_users" },
   { name: "Old Users", value: "old_users" },
