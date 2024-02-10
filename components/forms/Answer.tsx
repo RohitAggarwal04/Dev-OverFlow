@@ -93,7 +93,7 @@ const Answer = ({ question, authorId, questionId }: Props) => {
         <h4 className="paragraph-semibold text-dark400_light800 ">
           Write your answer here
         </h4>
-        <Button
+        {/* <Button
           onClick={() => generateAIAnswer()}
           className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none "
         >
@@ -112,7 +112,7 @@ const Answer = ({ question, authorId, questionId }: Props) => {
               Generate AI Answer
             </>
           )}
-        </Button>
+        </Button> */}
       </div>
       <Form {...form}>
         <form

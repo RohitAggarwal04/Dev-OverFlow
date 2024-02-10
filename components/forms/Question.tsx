@@ -211,7 +211,7 @@ const Question = ({ mongoUserId, questionDetail, type }: Props) => {
          "
             >
               <FormLabel
-                className="paragraph-semibold 
+                className="paragraph-semibold text-dark400_light800
               "
               >
                 Tags <span className="text-primary-500 ">*</span>{" "}
