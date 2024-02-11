@@ -129,20 +129,20 @@ interface Props {
   page: number;
 }
 export const jobsParams = async ({ query, filter, page }: Props) => {
-  const [countriesResponse, locationResponse] = await Promise.all([
-    fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
-    fetch("http://ip-api.com/json"),
-  ]);
+  // const [countriesResponse, locationResponse] = await Promise.all([
+  //   fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
+  //   fetch("http://ip-api.com/json"),
+  // ]);
 
-  const userLocation = await locationResponse.json();
-  const countriesData = await countriesResponse.json();
+  // const userLocation = await locationResponse.json();
+  // const countriesData = await countriesResponse.json();
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`,
     {
       method: "POST",
       body: JSON.stringify({
         searchQuery: query,
-        filter: filter || userLocation.country,
+        filter: filter || "india",
         page: page,
       }),
     }
@@ -150,20 +150,49 @@ export const jobsParams = async ({ query, filter, page }: Props) => {
   const responseData = await response.json();
   const data = responseData.result.data;
 
-  const countriesFilter = countriesData.map(
-    (country: { name: { common: any }; flags: { png: any } }) => ({
-      name: country.name.common,
-      flags: country.flags.png,
-      value: country.name.common,
-    })
-  );
+  const countriesFilter = [
+    {
+      name: "São Tomé and Príncipe",
+      flags: "https://flagcdn.com/w320/st.png",
+      value: "São Tomé and Príncipe",
+    },
+    {
+      name: "Kiribati",
+      flags: "https://flagcdn.com/w320/ki.png",
+      value: "Kiribati",
+    },
+    {
+      name: "Timor-Leste",
+      flags: "https://flagcdn.com/w320/tl.png",
+      value: "Timor-Leste",
+    },
+    {
+      name: "Lesotho",
+      flags: "https://flagcdn.com/w320/ls.png",
+      value: "Lesotho",
+    },
+    {
+      name: "Solomon Islands",
+      flags: "https://flagcdn.com/w320/sb.png",
+      value: "Solomon Islands",
+    },
+  ];
 
-  const filteredLocation = countriesFilter.filter((location: any) =>
-    location.name
-      .toLowerCase()
-      .includes(filter || userLocation.country.toLowerCase())
-  );
+  // countriesData.map(
+  //   (country: { name: { common: any }; flags: { png: any } }) => ({
+  //     name: country.name.common,
+  //     flags: country.flags.png,
+  //     value: country.name.common,
+  //   })
+  // );
 
-  const flagUrl = filteredLocation[0]?.flags;
+  // const filteredLocation = countriesFilter.filter((location: any) =>
+  //   location.name
+  //     .toLowerCase()
+  //     .includes(filter || userLocation.country.toLowerCase())
+  // );
+
+  const flagUrl = "https://flagcdn.com/w320/ca.png";
+
   return { flagUrl, countriesFilter, data };
 };
