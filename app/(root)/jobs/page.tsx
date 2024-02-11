@@ -16,7 +16,6 @@ const page = async ({ searchParams }: SearchParamsProps) => {
     filter,
     page,
   });
-  console.log(data);
 
   return (
     <>

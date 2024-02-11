@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": "e0a0a123c5msh3e2bb5703d914e0p1713c9jsn37070b07fd84",
+      "X-RapidAPI-Key": `${process.env.JSEARCH_API_KEY}`,
       "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
     },
   };
