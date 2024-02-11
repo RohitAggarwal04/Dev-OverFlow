@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "OK", result });
   } catch (error: any) {
+    console.log(error);
+
     return NextResponse.json({ error: error.message });
   }
 }
