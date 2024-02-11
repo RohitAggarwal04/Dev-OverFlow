@@ -2,57 +2,21 @@ import Filter from "@/components/shared/Filter";
 import Pagination from "@/components/shared/Pagination";
 import JobCard from "@/components/shared/card/JobCard";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import { jobsParams } from "@/lib/utils";
 import { SearchParamsProps } from "@/types";
 import React from "react";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
-  let countriesFilter: any;
-  let userLocation: any;
-  let flagUrl: string;
-  try {
-    const response = await fetch(
-      "https://restcountries.com/v3.1/all?fields=name,flags"
-    );
-    const Location = await fetch("http://ip-api.com/json");
-    userLocation = await Location.json();
+  const query = searchParams.q || "developer";
+  const filter = searchParams.filter;
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
-
-    countriesFilter = data.map(
-      (country: { name: { common: any }; flags: { png: any } }) => ({
-        name: country.name.common,
-        flags: country.flags.png,
-        value: country.name.common,
-      })
-    );
-
-    const location = countriesFilter.filter((location: any) =>
-      location.name
-        .toLowerCase()
-        .includes(searchParams.filter || userLocation.country.toLowerCase())
-    );
-
-    flagUrl = location[0]?.flags;
-  } catch (error) {
-    console.error("Fetch error:", error);
-  }
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        searchQuery: searchParams.q || "developer",
-        filter: searchParams.filter || userLocation.country,
-        page: searchParams.page ? parseInt(searchParams.page) : 1,
-      }),
-    }
-  );
-  const responseData = await response.json();
+  const { flagUrl, countriesFilter, data } = await jobsParams({
+    query,
+    filter,
+    page,
+  });
+  console.log(data);
 
   return (
     <>
@@ -73,9 +37,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6 ">
-        {responseData?.result?.data?.length > 0 ? (
+        {data?.length > 0 ? (
           <>
-            {responseData.result.data.map((item: any, i: number) => (
+            {data.map((item: any, i: number) => (
               <JobCard
                 key={i}
                 imgUrl={item.employer_logo}

@@ -122,3 +122,48 @@ export const assignBadges = (params: BadgeParam) => {
   });
   return BadgeCounts;
 };
+
+interface Props {
+  query: string;
+  filter: string | undefined;
+  page: number;
+}
+export const jobsParams = async ({ query, filter, page }: Props) => {
+  const [countriesResponse, locationResponse] = await Promise.all([
+    fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
+    fetch("http://ip-api.com/json"),
+  ]);
+
+  const userLocation = await locationResponse.json();
+  const countriesData = await countriesResponse.json();
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        searchQuery: query,
+        filter: filter || userLocation.country,
+        page: page,
+      }),
+    }
+  );
+  const responseData = await response.json();
+  const data = responseData.result.data;
+
+  const countriesFilter = countriesData.map(
+    (country: { name: { common: any }; flags: { png: any } }) => ({
+      name: country.name.common,
+      flags: country.flags.png,
+      value: country.name.common,
+    })
+  );
+
+  const filteredLocation = countriesFilter.filter((location: any) =>
+    location.name
+      .toLowerCase()
+      .includes(filter || userLocation.country.toLowerCase())
+  );
+
+  const flagUrl = filteredLocation[0]?.flags;
+  return { flagUrl, countriesFilter, data };
+};

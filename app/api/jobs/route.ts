@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const response = await fetch(url, options);
     const result = await response.json();
 
-    return NextResponse.json({ result });
+    return NextResponse.json({ message: "OK", result });
   } catch (error: any) {
     return NextResponse.json({ error: error.message });
   }
