@@ -138,6 +138,8 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
     const userLocation = await locationResponse.json();
     const countriesData = await countriesResponse.json();
     let location = filter || userLocation.country;
+    console.log(location);
+
     const response = await fetch(
       `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${location}&page=${page}&num_pages=1`,
       {
