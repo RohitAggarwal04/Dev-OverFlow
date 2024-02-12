@@ -2,7 +2,7 @@ import Filter from "@/components/shared/Filter";
 import Pagination from "@/components/shared/Pagination";
 import JobCard from "@/components/shared/card/JobCard";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
-import { jobsParams } from "@/lib/utils";
+import { jobSearch } from "@/lib/utils";
 import { SearchParamsProps } from "@/types";
 import React from "react";
 
@@ -11,7 +11,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   const filter = searchParams.filter;
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
-  const { flagUrl, countriesFilter, data } = await jobsParams({
+  const { flagUrl, countriesFilter, data } = await jobSearch({
     query,
     filter,
     page,

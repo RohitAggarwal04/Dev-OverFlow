@@ -128,43 +128,47 @@ interface Props {
   filter: string | undefined;
   page: number;
 }
-export const jobsParams = async ({ query, filter, page }: Props) => {
-  const [countriesResponse, locationResponse] = await Promise.all([
-    fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
-    fetch("http://ip-api.com/json"),
-  ]);
+export const jobSearch = async ({ query, filter, page }: Props) => {
+  try {
+    const [countriesResponse, locationResponse] = await Promise.all([
+      fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
+      fetch("http://ip-api.com/json"),
+    ]);
 
-  const userLocation = await locationResponse.json();
-  const countriesData = await countriesResponse.json();
-  const response = await fetch(
-    `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${filter || userLocation.country.toLowerCase()}&page=${page}&num_pages=1`,
-    {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": `${process.env.JSEARCH_API_KEY}`,
-        "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
-      },
-    }
-  );
+    const userLocation = await locationResponse.json();
+    const countriesData = await countriesResponse.json();
 
-  const responseData = await response.json();
-  const data = responseData.data;
-  console.log(data);
+    const response = await fetch(
+      `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${filter || userLocation.country}&page=${page}&num_pages=1`,
+      {
+        method: "GET",
+        headers: {
+          "X-RapidAPI-Key": `${process.env.JSEARCH_API_KEY}`,
+          "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+        },
+      }
+    );
 
-  const countriesFilter = countriesData.map(
-    (country: { name: { common: any }; flags: { png: any } }) => ({
-      name: country.name.common,
-      flags: country.flags.png,
-      value: country.name.common,
-    })
-  );
+    const responseData = await response.json();
+    const data = responseData.data;
 
-  const filteredLocation = countriesFilter.filter((location: any) =>
-    location.name
-      .toLowerCase()
-      .includes(filter || userLocation.country.toLowerCase())
-  );
+    const countriesFilter = countriesData.map(
+      (country: { name: { common: any }; flags: { png: any } }) => ({
+        name: country.name.common,
+        flags: country.flags.png,
+        value: country.name.common,
+      })
+    );
 
-  const flagUrl = filteredLocation[0]?.flags;
-  return { flagUrl, countriesFilter, data };
+    const filteredLocation = countriesFilter.filter((location: any) =>
+      location.name
+        .toLowerCase()
+        .includes(filter || userLocation.country.toLowerCase())
+    );
+
+    const flagUrl = filteredLocation[0]?.flags;
+    return { flagUrl, countriesFilter, data };
+  } catch (error) {
+    throw error;
+  }
 };
