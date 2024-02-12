@@ -138,6 +138,7 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
     const userLocation = await locationResponse.json();
     const countriesData = await countriesResponse.json();
     let location = filter || userLocation.country;
+    console.log(userLocation.country);
     console.log(location);
 
     const response = await fetch(
