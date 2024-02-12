@@ -13,7 +13,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
 
   const { flagUrl, countriesFilter, data } = await jobSearch({
     query,
-    filter,
+    filter: filter,
     page,
   });
 
