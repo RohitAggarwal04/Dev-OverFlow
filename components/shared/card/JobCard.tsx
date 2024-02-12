@@ -83,7 +83,7 @@ const JobCard = ({
               </p>
             </div>
             <Link
-              href={apply_link}
+              href={apply_link ? apply_link : ""}
               target="_blank"
               rel="noreferrer"
               className="primary-text-gradient flex gap-2 body-semibold "

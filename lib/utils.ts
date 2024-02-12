@@ -137,19 +137,18 @@ export const jobsParams = async ({ query, filter, page }: Props) => {
   const userLocation = await locationResponse.json();
   const countriesData = await countriesResponse.json();
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`,
+    `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${filter}&page=${page}&num_pages=1`,
     {
-      method: "POST",
-      body: JSON.stringify({
-        searchQuery: query,
-        filter: filter || userLocation.country,
-        page: page,
-      }),
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": `${process.env.JSEARCH_API_KEY}`,
+        "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+      },
     }
   );
-  const responseData = await response.json();
-  const data = [responseData.result.data];
 
+  const responseData = await response.json();
+  const data = responseData.data;
   const countriesFilter = countriesData.map(
     (country: { name: { common: any }; flags: { png: any } }) => ({
       name: country.name.common,
