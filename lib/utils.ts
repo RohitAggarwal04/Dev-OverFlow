@@ -149,6 +149,8 @@ export const jobsParams = async ({ query, filter, page }: Props) => {
 
   const responseData = await response.json();
   const data = responseData.data;
+  console.log(data);
+
   const countriesFilter = countriesData.map(
     (country: { name: { common: any }; flags: { png: any } }) => ({
       name: country.name.common,
