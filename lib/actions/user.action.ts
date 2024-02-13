@@ -19,6 +19,7 @@ import Tag from "../models/tag.model";
 import Answer from "../models/answer.model";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
+import Interaction from "../models/interaction.model";
 
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
@@ -106,6 +107,8 @@ export async function deleteUser(userData: DeleteUserParams) {
     }
 
     await Question.deleteMany({ author: user._id });
+    await Answer.deleteMany({ author: user._id });
+    await Interaction.deleteMany({ user: user._id });
     const deletedUser = await User.findByIdAndDelete(user._id);
     return deletedUser;
   } catch (error) {
