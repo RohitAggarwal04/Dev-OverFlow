@@ -1,4 +1,3 @@
-"use client";
 import Filter from "@/components/shared/Filter";
 import Pagination from "@/components/shared/Pagination";
 import JobCard from "@/components/shared/card/JobCard";
@@ -11,13 +10,10 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   const query = searchParams.q || "developer";
   const filter = searchParams.filter;
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const locationResponse = await fetch("http://ip-api.com/json");
-  const userLocation = await locationResponse.json();
 
-  let location = filter || userLocation.country;
   const { flagUrl, countriesFilter, data } = await jobSearch({
     query,
-    filter: location,
+    filter: filter,
     page,
   });
 

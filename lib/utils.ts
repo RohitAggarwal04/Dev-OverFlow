@@ -125,19 +125,23 @@ export const assignBadges = (params: BadgeParam) => {
 
 interface Props {
   query: string;
-  filter: string;
+  filter: string | undefined;
   page: number;
 }
 export const jobSearch = async ({ query, filter, page }: Props) => {
   try {
-    const countriesResponse = await fetch(
-      "https://restcountries.com/v3.1/all?fields=name,flags"
-    );
+    const [countriesResponse, locationResponse] = await Promise.all([
+      fetch("https://restcountries.com/v3.1/all?fields=name,flags"),
+      fetch("http://ip-api.com/json"),
+    ]);
 
+    const userLocation = await locationResponse.json();
     const countriesData = await countriesResponse.json();
+    let location = filter || userLocation.country;
+    console.log(userLocation);
 
     const response = await fetch(
-      `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${filter}&page=${page}&num_pages=1`,
+      `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${location}&page=${page}&num_pages=1`,
       {
         method: "GET",
         headers: {
@@ -159,8 +163,11 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
     );
 
     const filteredLocation = countriesFilter.filter(
-      (location: any) => location.name.toLowerCase() === filter.toLowerCase()
+      (location: any) =>
+        location.name.toLowerCase() ===
+        (filter || userLocation.country.toLowerCase())
     );
+
     const flagUrl = filteredLocation[0]?.flags;
     return { flagUrl, countriesFilter, data };
   } catch (error) {
