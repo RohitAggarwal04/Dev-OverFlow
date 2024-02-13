@@ -66,7 +66,12 @@ export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDB();
     const { userId } = params;
+    console.log("userId:" + userId);
+
     const user = await User.findOne({ clerkId: userId });
+    console.log(user);
+    console.log("clerkId:" + user.clerkId);
+
     return user;
   } catch (error) {
     console.log(error);
