@@ -138,7 +138,6 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
     const userLocation = await locationResponse.json();
     const countriesData = await countriesResponse.json();
     let location = filter || userLocation.country;
-    console.log(userLocation);
 
     const response = await fetch(
       `https://jsearch.p.rapidapi.com/search?query=${query}%20in%20${location}&page=${page}&num_pages=1`,
@@ -167,6 +166,7 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
         location.name.toLowerCase() ===
         (filter || userLocation.country.toLowerCase())
     );
+    console.log(filteredLocation);
 
     const flagUrl = filteredLocation[0]?.flags;
     return { flagUrl, countriesFilter, data };

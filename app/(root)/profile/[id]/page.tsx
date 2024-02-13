@@ -83,7 +83,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         totalQuestions={totalQuestions}
         badges={BadgeCounts}
       />
-      <div className="mt-1 gap-10 flex ">
+      <div className="mt-10 gap-10 flex ">
         <Tabs defaultValue="top-posts" className="flex-1 ">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1 ">
             <TabsTrigger value="top-posts" className="tab">

@@ -185,7 +185,6 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
-    console.log(question);
 
     if (!question) {
       throw new Error("Question not found");
