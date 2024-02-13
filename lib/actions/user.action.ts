@@ -80,7 +80,7 @@ export async function createUser(userData: CreateUserParams) {
 
     const newUser = await User.create(userData);
     // Delay for 3 seconds
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     return newUser;
   } catch (error) {
