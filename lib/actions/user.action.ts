@@ -66,14 +66,8 @@ export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDB();
     const { userId } = params;
-    console.log("userId:" + userId);
-
     const user = await User.findOne({ clerkId: userId });
-
     if (!user) throw new Error("User not found");
-    console.log("user:" + user);
-    console.log("clerkId:" + user.clerkId);
-
     return user;
   } catch (error) {
     console.log(error);
@@ -85,7 +79,8 @@ export async function createUser(userData: CreateUserParams) {
     connectToDB();
 
     const newUser = await User.create(userData);
-    console.log("new user:" + newUser);
+    // Delay for 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     return newUser;
   } catch (error) {

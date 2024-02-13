@@ -30,6 +30,7 @@ const AnswerCard = ({
   createdAt,
 }: Props) => {
   const showActionsButton = clerkId && clerkId === author.clerkId;
+
   return (
     <div className="card-wrapper rounded-[10px] py-9 my-1 px-11 ">
       <div className="flex items-start flex-col-reverse justify-between gap-5 sm:flex-row ">
