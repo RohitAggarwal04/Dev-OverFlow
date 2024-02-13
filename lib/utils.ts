@@ -166,7 +166,6 @@ export const jobSearch = async ({ query, filter, page }: Props) => {
         location.name.toLowerCase() ===
         (filter || userLocation.country.toLowerCase())
     );
-    console.log(filteredLocation);
 
     const flagUrl = filteredLocation[0]?.flags;
     return { flagUrl, countriesFilter, data };
