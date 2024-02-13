@@ -13,16 +13,11 @@ export default authMiddleware({
     "/jobs",
   ],
   ignoredRoutes: ["/api/webhook", "/api/chatgpt", "/api/jobs"],
-  afterAuth(auth, req, evt) {
+  afterAuth(auth, req) {
     // Handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
-    } // If the user is logged in and trying to access a protected route, allow them to access route
-    if (auth.userId && !auth.isPublicRoute) {
-      return NextResponse.next();
     }
-    // Allow users visiting public routes to access them
-    return NextResponse.next();
   },
 });
 
