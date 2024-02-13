@@ -66,6 +66,8 @@ export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDB();
     const { userId } = params;
+    // Delay for 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     const user = await User.findOne({ clerkId: userId });
     if (!user) throw new Error("User not found");
     return user;
@@ -79,8 +81,6 @@ export async function createUser(userData: CreateUserParams) {
     connectToDB();
 
     const newUser = await User.create(userData);
-    // Delay for 3 seconds
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     return newUser;
   } catch (error) {
