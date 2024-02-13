@@ -1,3 +1,4 @@
+"use client";
 import Filter from "@/components/shared/Filter";
 import Pagination from "@/components/shared/Pagination";
 import JobCard from "@/components/shared/card/JobCard";
