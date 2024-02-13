@@ -9,6 +9,8 @@ import {
   GetQuestionsByTagIdParams,
   GetTopInteractedTagsParams,
 } from "./shared.types";
+import Interaction from "../models/interaction.model";
+import { any } from "zod";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -18,10 +20,28 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     if (!user) {
       throw new Error("User not found");
     }
-    return [
-      { _id: "1", name: "tag1" },
-      { _id: "2", name: "tag2" },
+    const userInteractions = await Interaction.find({ user: user._id })
+      .populate("tags")
+      .exec();
+
+    // Extract tags from user's interactions
+    const userTags: any = userInteractions.reduce((tags, interaction) => {
+      if (interaction.tags) {
+        tags = tags.concat(interaction.tags);
+      }
+      return tags;
+    }, []);
+
+    // Get distinct tag IDs from user's interactions
+    const distinctUserTagIds = [
+      // @ts-ignore
+      ...new Set(userTags.map((tag: any) => tag._id)),
     ];
+    const tags = await Tag.find({ _id: { $in: distinctUserTagIds } })
+      .limit(2)
+      .exec();
+
+    return tags;
   } catch (error) {
     console.log(error);
     throw error;
