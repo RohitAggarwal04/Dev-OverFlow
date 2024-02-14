@@ -180,6 +180,8 @@ export async function GetSavedQuestions(params: GetSavedQuestionsParams) {
       default:
         break;
     }
+    // Delay for 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     const user = await User.findOne({ clerkId: clerkId }).populate({
       path: "saved",
       match: query,
