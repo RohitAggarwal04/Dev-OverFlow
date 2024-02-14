@@ -45,7 +45,7 @@ const JobCard = ({
             <h1 className="base-semibold text-dark200_light900 flex ">
               {title}
             </h1>
-            <div className="rounded-full flex text-dark400_light700 gap-2 w-fit h-fit whitespace-nowrap items-center justify-center bg-[#212734] py-1 px-4  ">
+            <div className="rounded-full flex text-dark400_light700 gap-2 w-fit h-fit whitespace-nowrap items-center justify-center bg-[#F4F6F8] dark:bg-[#212734] py-1 px-4  ">
               <Image
                 src={flagUrl}
                 alt="flag"
