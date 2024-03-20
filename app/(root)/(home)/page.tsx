@@ -11,12 +11,35 @@ import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";
 
 import Link from "next/link";
-export const metadata: Metadata = {
-  title: "Dev Overflow",
+const metadata: Metadata = {
+  title: "Dev Overflow - Your Technical Question and Answer Platform",
   description:
-    "Empowering the world to develop technology through collective knowledge",
-  icons: {
-    icon: "/assets/images/site-logo.svg",
+    "Empowering the world to develop technology through collective knowledge. Find answers to your technical questions and share your knowledge with others.",
+  openGraph: {
+    title: "Dev Overflow - Your Technical Question and Answer Platform",
+    description:
+      "Empowering the world to develop technology through collective knowledge. Find answers to your technical questions and share your knowledge with others.",
+    url: "https://www.example.com/home",
+    images: [
+      {
+        url: "https://thecodewiz.com/static/media/top-kids-coding-languages.86a4d500.png",
+        width: 800,
+        height: 600,
+        alt: "Dev Overflow Logo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    title: "Dev Overflow - Your Technical Question and Answer Platform",
+    description:
+      "Empowering the world to develop technology through collective knowledge. Find answers to your technical questions and share your knowledge with others.",
+    images: {
+      url: "https://thecodewiz.com/static/media/top-kids-coding-languages.86a4d500.png",
+      alt: "Dev Overflow Logo",
+    },
+    creator: "@devoverflow",
+    card: "summary_large_image",
   },
 };
 export default async function Home({ searchParams }: SearchParamsProps) {
@@ -89,3 +112,9 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     </>
   );
 }
+export const generateMetadata = (): Metadata => {
+  return {
+    ...metadata,
+    metadataBase: new URL("https://www.example.com"),
+  };
+};
